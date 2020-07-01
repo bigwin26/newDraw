@@ -1,14 +1,13 @@
-import express, { Application, Request, Response } from "express";
-import connect from "../schemas";
+import express, { Application } from "express";
+import connect from "./schemas";
+
+import shoesRouter from "./router";
 
 const app: Application = express();
 const port: number = 3000;
-
 connect();
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("HomePage");
-});
+app.use("/shoes", shoesRouter);
 
 app.listen(port, (err) => {
   if (err) return console.error(err);
