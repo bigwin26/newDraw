@@ -13,6 +13,7 @@ exports.default = () => {
             dbName: "yourdraw",
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            useCreateIndex: true,
         }, (error) => {
             if (error) {
                 console.log("db error", error);
