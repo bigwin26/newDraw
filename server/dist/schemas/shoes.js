@@ -13,6 +13,7 @@ const shoesShema = new Schema({
     code: { type: String, required: true, unique: true },
     color: { type: String },
     price: { type: String },
+    location: { type: String },
     release_date: { type: String, required: true },
     img_path: { type: String },
     main_img_path: { type: String },
