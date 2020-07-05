@@ -1,12 +1,16 @@
 import express, { Application } from "express";
 import connect from "./schemas";
-
+import crawler from "./crawler/nike";
 import shoesRouter from "./router";
 
 const app: Application = express();
 const port: number = 3000;
-connect();
 
+//mongoDB연결
+connect();
+//crawler실행
+crawler();
+//라우터
 app.use("/shoes", shoesRouter);
 
 app.listen(port, (err) => {

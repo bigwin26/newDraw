@@ -1,11 +1,8 @@
 import Shoes from "../schemas/shoes";
-import connect from "../schemas";
 import webdriver, { By } from "selenium-webdriver";
 import cron from "node-cron";
-//DB연결
-connect();
 
-//크롤링한 주소에서 신발 code값 추출
+//크롤링한 주소에서 상품 code값 추출
 function getStyleCode(value: string) {
   const n = value.split("/");
   //해당 상품이 신발일 경우에만 code값 리턴, 아닐경우 null값 리턴
@@ -36,10 +33,6 @@ async function crawl() {
       release_date: "",
       location: "",
     };
-    /*     element
-      .findElement(By.className("img-component"))
-      .getAttribute("src")
-      .then((img_path: string) => (item.img_path = img_path)); */
     const href = await element
       .findElement(By.tagName("a"))
       .getAttribute("href");
@@ -73,14 +66,43 @@ async function crawl() {
     }
   });
   // DB에 값 저장 후 driver 연결종료.
-  driver.quit();
+  await driver.quit();
 
   //발매예정 상품디테일정보 크롤링
-  Shoes.find({ status: "upcoming" }, (err, docs) => {
-    console.log(docs);
+  await Shoes.find({ status: "upcoming" }, (err, docs) => {
+    //docs.forEach(({ code, location }) => {
+    for (let index = 0; index < docs.length; index++) {
+      setTimeout(async () => {
+        const { code, location } = docs[index];
+
+        var driver = new webdriver.Builder()
+          .withCapabilities(webdriver.Capabilities.chrome())
+          .build();
+
+        //webdriver URL 호출
+        await driver.get(location);
+        const color = await driver
+          .findElement(By.className("txt-title"))
+          .getText();
+        const price = await driver.findElement(By.className("price")).getText();
+        const description = await driver
+          .findElement(By.className("p1_tail"))
+          .getText();
+        try {
+          await Shoes.updateMany({ code }, { color, price, description });
+        } catch (error) {
+          console.error(error);
+        } finally {
+          await driver.quit();
+        }
+      }, 10000 * index);
+    }
   });
 }
 
-cron.schedule("1 * * * * *", () => {
-  crawl();
-});
+export default () => {
+  //매일 아침 6시마다 상품리스트 업데이트
+  cron.schedule("* 6 * * *", () => {
+    crawl();
+  });
+};

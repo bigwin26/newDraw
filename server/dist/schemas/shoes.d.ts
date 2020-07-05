@@ -4,6 +4,7 @@ export interface IShoes extends mongoose.Document {
     code: string;
     color: string;
     price: string;
+    description: string;
     location: string;
     release_date: string;
     img_path: string;

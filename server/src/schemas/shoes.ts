@@ -7,6 +7,7 @@ export interface IShoes extends mongoose.Document {
   code: string;
   color: string;
   price: string;
+  description: string;
   location: string;
   release_date: string;
   img_path: string;
@@ -23,6 +24,7 @@ const shoesShema = new Schema({
   code: { type: String, required: true, unique: true },
   color: { type: String },
   price: { type: String },
+  description: { type: String },
   location: { type: String },
   release_date: { type: String, required: true },
   img_path: { type: String },
