@@ -1,6 +1,5 @@
 import Shoes from "../schemas/shoes";
 import webdriver, { By } from "selenium-webdriver";
-import cron from "node-cron";
 
 //크롤링한 주소에서 상품 code값 추출
 function getStyleCode(value: string) {
@@ -10,7 +9,7 @@ function getStyleCode(value: string) {
 }
 
 //발매예정 상품리스트 크롤링
-async function crawl() {
+export default async function crawl() {
   //var driver = new webdriver.Builder().forBrowser("chrome").build();
   var driver = new webdriver.Builder()
     .withCapabilities(webdriver.Capabilities.chrome())
@@ -99,10 +98,3 @@ async function crawl() {
     }
   });
 }
-
-export default () => {
-  //매일 아침 6시마다 상품리스트 업데이트
-  cron.schedule("* 6 * * *", () => {
-    crawl();
-  });
-};

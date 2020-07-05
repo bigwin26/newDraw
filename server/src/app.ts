@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import connect from "./schemas";
-import crawler from "./crawler/nike";
+import crawler from "./crawler";
 import shoesRouter from "./router";
 
 const app: Application = express();

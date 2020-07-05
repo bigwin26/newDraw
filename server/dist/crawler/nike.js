@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -30,11 +11,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const shoes_1 = __importDefault(require("../schemas/shoes"));
 const selenium_webdriver_1 = __importStar(require("selenium-webdriver"));
-const node_cron_1 = __importDefault(require("node-cron"));
-//크롤링한 주소에서 신발 code값 추출
+//크롤링한 주소에서 상품 code값 추출
 function getStyleCode(value) {
     const n = value.split("/");
     //해당 상품이 신발일 경우에만 code값 리턴, 아닐경우 null값 리턴
@@ -60,10 +47,6 @@ function crawl() {
                 release_date: "",
                 location: "",
             };
-            /*     element
-              .findElement(By.className("img-component"))
-              .getAttribute("src")
-              .then((img_path: string) => (item.img_path = img_path)); */
             const href = yield element
                 .findElement(selenium_webdriver_1.By.tagName("a"))
                 .getAttribute("href");
@@ -128,13 +111,8 @@ function crawl() {
                     }
                 }), 10000 * index);
             }
-            //});
         });
     });
 }
-exports.default = () => {
-    node_cron_1.default.schedule("1 * * * * *", () => {
-        crawl();
-    });
-};
+exports.default = crawl;
 //# sourceMappingURL=nike.js.map
