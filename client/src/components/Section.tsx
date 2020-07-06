@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid } from "./Section.styles";
+import { Container, Title, Grid } from "./Section.styles";
 
 interface ISection {
   title?: string;
@@ -7,9 +7,10 @@ interface ISection {
   children: React.ReactNode;
 }
 
-export default function Section({ children }: ISection) {
+export default function Section({ title, children }: ISection) {
   return (
     <Container>
+      {title && <Title>{title}</Title>}
       <Grid>{children}</Grid>
     </Container>
   );

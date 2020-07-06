@@ -19,7 +19,7 @@ export default function Main() {
     <>
       <Poster />
       <StyledArticle>
-        <Section>
+        <Section title="UPCOMING">
           <Card />
           <Card />
           <Card />

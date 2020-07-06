@@ -1,16 +1,31 @@
 import React from "react";
-import styled from "styled-components";
-
-const StyledFooter = styled.footer`
-  box-sizing: border-box;
-  min-width: 0px;
-  background-color: rgb(37, 37, 37);
-  display: flex;
-  width: 100%;
-  margin: 0px;
-  color: white;
-`;
+import {
+  StyledFooter,
+  Container,
+  Intro,
+  Title,
+  StyledLink,
+  Description,
+} from "./Footer.styles";
 
 export default function Footer() {
-  return <StyledFooter>Footer</StyledFooter>;
+  return (
+    <StyledFooter>
+      <Container>
+        <Intro>
+          <Title>Info</Title>
+          <Description>
+            YourDraw는 신발 발매정보를 제공합니다.
+            <br />
+            이 사이트는 모바일환경에 최적화 되어있습니다.
+            <br />
+            Made By 대승
+          </Description>
+          <Title>Contact</Title>
+          <Description>kdsgood12@gmail.com</Description>
+          <StyledLink href="https://github.com/bigwin26">Github</StyledLink>
+        </Intro>
+      </Container>
+    </StyledFooter>
+  );
 }
