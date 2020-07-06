@@ -14,7 +14,6 @@
 - typescript
 - mongoose
 - mongoDB
-- jest
 
 -- etc
 
