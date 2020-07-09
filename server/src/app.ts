@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import connect from "./schemas";
 import crawler from "./crawler";
-import shoesRouter from "./router";
+import shoesRouter from "./router/shoes";
 
 const app: Application = express();
 const port: number = 3000;

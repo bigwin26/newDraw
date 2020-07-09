@@ -1,5 +1,6 @@
 import Shoes from "../schemas/shoes";
 import webdriver, { By } from "selenium-webdriver";
+import downloadImg from "./common/imgdownload";
 
 //크롤링한 주소에서 상품 code값 추출
 function getStyleCode(value: string) {
@@ -55,10 +56,12 @@ export default async function crawl() {
       await new Shoes({
         title,
         code,
+        color: null,
+        price: null,
         location,
         release_date,
         method: "FCFS",
-        status: "upcoming",
+        status: null,
       }).save();
     } catch (error) {
       console.error(error);
@@ -68,33 +71,52 @@ export default async function crawl() {
   await driver.quit();
 
   //발매예정 상품디테일정보 크롤링
-  await Shoes.find({ status: "upcoming" }, (err, docs) => {
-    //docs.forEach(({ code, location }) => {
-    for (let index = 0; index < docs.length; index++) {
-      setTimeout(async () => {
-        const { code, location } = docs[index];
+  await Shoes.find(
+    { status: "upcoming", color: null, price: null },
+    (err, docs) => {
+      //docs.forEach(({ code, location }) => {
+      for (let index = 0; index < docs.length; index++) {
+        setTimeout(async () => {
+          const { code, location } = docs[index];
 
-        var driver = new webdriver.Builder()
-          .withCapabilities(webdriver.Capabilities.chrome())
-          .build();
+          var driver = new webdriver.Builder()
+            .withCapabilities(webdriver.Capabilities.chrome())
+            .build();
 
-        //webdriver URL 호출
-        await driver.get(location);
-        const color = await driver
-          .findElement(By.className("txt-title"))
-          .getText();
-        const price = await driver.findElement(By.className("price")).getText();
-        const description = await driver
-          .findElement(By.className("p1_tail"))
-          .getText();
-        try {
-          await Shoes.updateMany({ code }, { color, price, description });
-        } catch (error) {
-          console.error(error);
-        } finally {
-          await driver.quit();
-        }
-      }, 10000 * index);
-    }
-  });
+          //webdriver URL 호출
+          await driver.get(location);
+          const color = await driver
+            .findElement(By.className("txt-title"))
+            .getText();
+          const price = await driver
+            .findElement(By.className("price"))
+            .getText();
+          const description = await driver
+            .findElement(By.className("p1_tail"))
+            .getText();
+          const images = await driver.findElements(
+            By.className("uk-width-1-2 image-list"),
+          );
+          async function saveImg(images: any[]) {
+            images.forEach(async (element, index) => {
+              const imgsrc = await element
+                .findElement(By.tagName("img"))
+                .getAttribute("data-product-image");
+              downloadImg(code, imgsrc, index);
+            });
+          }
+          saveImg(images);
+          try {
+            await Shoes.updateMany({ code }, { color, price, description });
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setTimeout(() => {
+              driver.quit();
+            }, 3000);
+          }
+        }, 10000 * index);
+      }
+    },
+  );
 }

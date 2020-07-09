@@ -21,6 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const shoes_1 = __importDefault(require("../schemas/shoes"));
 const selenium_webdriver_1 = __importStar(require("selenium-webdriver"));
+const imgdownload_1 = __importDefault(require("./common/imgdownload"));
 //크롤링한 주소에서 상품 code값 추출
 function getStyleCode(value) {
     const n = value.split("/");
@@ -70,10 +71,12 @@ function crawl() {
                 yield new shoes_1.default({
                     title,
                     code,
+                    color: null,
+                    price: null,
                     location,
                     release_date,
                     method: "FCFS",
-                    status: "upcoming",
+                    status: null,
                 }).save();
             }
             catch (error) {
@@ -83,7 +86,7 @@ function crawl() {
         // DB에 값 저장 후 driver 연결종료.
         yield driver.quit();
         //발매예정 상품디테일정보 크롤링
-        yield shoes_1.default.find({ status: "upcoming" }, (err, docs) => {
+        yield shoes_1.default.find({ status: "upcoming", color: null, price: null }, (err, docs) => {
             //docs.forEach(({ code, location }) => {
             for (let index = 0; index < docs.length; index++) {
                 setTimeout(() => __awaiter(this, void 0, void 0, function* () {
@@ -96,10 +99,24 @@ function crawl() {
                     const color = yield driver
                         .findElement(selenium_webdriver_1.By.className("txt-title"))
                         .getText();
-                    const price = yield driver.findElement(selenium_webdriver_1.By.className("price")).getText();
+                    const price = yield driver
+                        .findElement(selenium_webdriver_1.By.className("price"))
+                        .getText();
                     const description = yield driver
                         .findElement(selenium_webdriver_1.By.className("p1_tail"))
                         .getText();
+                    const images = yield driver.findElements(selenium_webdriver_1.By.className("uk-width-1-2 image-list"));
+                    function saveImg(images) {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            images.forEach((element, index) => __awaiter(this, void 0, void 0, function* () {
+                                const imgsrc = yield element
+                                    .findElement(selenium_webdriver_1.By.tagName("img"))
+                                    .getAttribute("data-product-image");
+                                imgdownload_1.default(code, imgsrc, index);
+                            }));
+                        });
+                    }
+                    saveImg(images);
                     try {
                         yield shoes_1.default.updateMany({ code }, { color, price, description });
                     }
@@ -107,7 +124,9 @@ function crawl() {
                         console.error(error);
                     }
                     finally {
-                        yield driver.quit();
+                        setTimeout(() => {
+                            driver.quit();
+                        }, 3000);
                     }
                 }), 10000 * index);
             }

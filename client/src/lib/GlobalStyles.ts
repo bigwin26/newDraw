@@ -12,6 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   word-break: keep-all;
+  background-color:whitesmoke;
 }
  
 * {
@@ -44,9 +45,6 @@ li {
 }
 a {
   text-decoration: none;
-}
-main {
-  padding-top: 70px;
 }
 `;
 
