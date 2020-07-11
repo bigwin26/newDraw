@@ -1,1 +1,1 @@
-export const getList = () => {};
+export const getAuth = () => {};
