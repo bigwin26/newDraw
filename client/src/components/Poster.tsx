@@ -7,10 +7,17 @@ const Item = styled.div`
   width: 100%;
   min-height: 60vh;
   margin-bottom: 2vh;
+
+  transition: all 0.3s ease-in-out 0s;
+`;
+
+const Img = styled.div`
+  width: 100%;
+  min-height: inherit;
   background-image: url(${require("../lib/assets/test2.png")});
   background-repeat: no-repeat;
-  background-size: contain;
-  transition: all 0.3s ease-in-out 0s;
+  background-size: cover;
+  background-position: center center;
 `;
 
 const Info = styled.div`
@@ -106,11 +113,15 @@ export default function Poster() {
     setSecs(diffSec);
   }
   useEffect(() => {
-    setInterval(getTime, 1000);
+    const time = setInterval(getTime, 1000);
+    return () => {
+      clearInterval(time);
+    };
   }, []);
 
   return (
     <Item>
+      <Img />
       <Info>
         <h3>UP COMING</h3>
         <h2>NIKE JODAN 1</h2>

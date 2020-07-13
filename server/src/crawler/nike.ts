@@ -61,7 +61,7 @@ export default async function crawl() {
         location,
         release_date,
         method: "FCFS",
-        status: null,
+        status: "upcoming",
       }).save();
     } catch (error) {
       console.error(error);

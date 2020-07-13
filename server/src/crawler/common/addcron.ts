@@ -3,10 +3,10 @@ import fcm from "./fcm";
 import cron from "node-schedule";
 
 async function addcron() {
-  /*   const list = await Shoes.find({ status: 'upcoming' })
+  const list = await Shoes.find({ status: "upcoming" })
     .sort({ release_date: 1 })
-    .exec(); */
-  const list = [
+    .exec();
+  /* const list = [
     {
       title: "조던1",
       location: "localhost:3000",
@@ -27,22 +27,23 @@ async function addcron() {
       location: "localhost:3000",
       release_date: "2020-07-11 17:18:20",
     },
-  ];
+  ]; */
   list.forEach((element) => {
     const time = getTime(element.release_date);
+    const code = element.code;
     if (time[0] <= 0) {
       cron.scheduleJob(time[1], () => {
         //5분전 발매 알림 fcm메시지 등록
         fcm(element.title, element.location);
       });
-      cron.scheduleJob(element.release_date, () => {
+      cron.scheduleJob(element.release_date, async () => {
         //발매알림
         fcm(element.title, element.location);
         try {
-          await Shoes.update({ code }, { status:'released' });
+          await Shoes.update({ code }, { status: "released" });
         } catch (error) {
           console.error(error);
-        } 
+        }
       });
     }
   });

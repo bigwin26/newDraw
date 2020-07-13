@@ -12,7 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   word-break: keep-all;
-  background-color:whitesmoke;
+  background-color:white;
 }
  
 * {
@@ -45,6 +45,7 @@ li {
 }
 a {
   text-decoration: none;
+  color:black;
 }
 `;
 

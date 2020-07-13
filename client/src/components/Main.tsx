@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import Section from "./Section";
-import Card from "./Card";
+import Horizon from "./Horizon";
+import Shoes from "./Shoes2";
 import Poster from "./Poster";
 
 const StyledArticle = styled.div`
+  background-color: white;
   box-sizing: border-box;
   min-width: 0px;
   position: relative;
   top: 0px;
   flex-direction: column;
   display: flex;
-  margin: 10px 20px;
 `;
 
 export default function Main() {
@@ -19,11 +19,16 @@ export default function Main() {
     <>
       <Poster />
       <StyledArticle>
-        <Section title="UPCOMING">
-          <Card />
-          <Card />
-          <Card />
-        </Section>
+        <Horizon title="UPCOMING" path="/products">
+          <Shoes />
+          <Shoes />
+          <Shoes />
+        </Horizon>
+        <Horizon title="RELEASED" path="/products">
+          <Shoes />
+          <Shoes />
+          <Shoes />
+        </Horizon>
       </StyledArticle>
     </>
   );

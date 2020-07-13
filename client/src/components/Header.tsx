@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const StyledHeader = styled.header`
   width: 100%;
@@ -16,5 +17,9 @@ const StyledHeader = styled.header`
 `;
 
 export default function Header() {
-  return <StyledHeader>YourDraw</StyledHeader>;
+  return (
+    <StyledHeader>
+      <Link to="/">YourDraw</Link>
+    </StyledHeader>
+  );
 }
