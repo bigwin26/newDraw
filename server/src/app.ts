@@ -4,7 +4,7 @@ import crawler from "./crawler";
 import shoesRouter from "./router/shoes";
 
 const app: Application = express();
-const port: number = 3000;
+const port: number = 8080;
 
 //mongoDB연결
 connect();

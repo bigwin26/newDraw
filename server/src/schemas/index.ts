@@ -6,7 +6,7 @@ export default () => {
       mongoose.set("debug", true);
     }
     mongoose.connect(
-      "mongodb://localhost:27017",
+      "mongodb://yourdraw:yourkim@13.125.216.20:27017",
       {
         dbName: "yourdraw",
         useNewUrlParser: true,
