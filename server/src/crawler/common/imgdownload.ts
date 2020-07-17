@@ -6,7 +6,8 @@ export default async function downloadImg(
   src: string,
   index: number,
 ) {
-  var writeStream = fs.createWriteStream(`./src/images/${code}-${index}.png`);
+  const writeStream = fs.createWriteStream(`./src/images/${code}-${index}.png`);
+  console.log("imgDownload: ", src);
   try {
     request(src)
       .on("error", (error: any) => {

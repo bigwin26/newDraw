@@ -11,8 +11,8 @@ function getStyleCode(value: string) {
 
 //발매예정 상품리스트 크롤링
 export default async function crawl() {
-  //var driver = new webdriver.Builder().forBrowser("chrome").build();
-  var driver = new webdriver.Builder()
+  //const driver = new webdriver.Builder().forBrowser("chrome").build();
+  const driver = new webdriver.Builder()
     .withCapabilities(webdriver.Capabilities.chrome())
     .build();
 
@@ -20,15 +20,19 @@ export default async function crawl() {
   driver.get("https://www.nike.com/kr/launch/?type=upcoming");
 
   //리스트값 저장할 배열 선언
-  const items: any[] = [];
+  let items: any[] = [];
 
-  const el = await driver.findElements(
+  //발매예정 리스트 가져오기
+  const elements = await driver.findElements(
     By.className("launch-list-item  upcomingItem"),
   );
-  for (let index = 0; index < el.length; index++) {
-    const element = el[index];
+
+  //발매리스트 갯수만큼 객체생성
+  for (let index = 0; index < elements.length; index++) {
+    const element = elements[index];
     const item = {
       title: "",
+      method: "",
       code: "",
       release_date: "",
       location: "",
@@ -41,17 +45,23 @@ export default async function crawl() {
       const title = await element
         .findElement(By.className("txt-description"))
         .getText();
+      let method = await element
+        .findElement(By.className("txt-subject"))
+        .getText();
+      method = method.slice(-5, -3) === "응모" ? "DRAW" : "FCFS";
       const release_date = await element.getAttribute("data-active-date");
       item.title = title;
+      item.method = method;
       item.release_date = release_date;
       item.code = code;
       item.location = href;
       //배열에 크롤링값 저장
-      items.push(item);
+      //items.push(item);
+      items = [...items, item];
     }
   }
-  // DB에 값 저장
-  items.forEach(async ({ title, code, location, release_date }) => {
+  // 생성된 객체 DB에 값 저장
+  items.forEach(async ({ title, method, code, location, release_date }) => {
     try {
       await new Shoes({
         title,
@@ -60,7 +70,7 @@ export default async function crawl() {
         price: null,
         location,
         release_date,
-        method: "FCFS",
+        method,
         status: "upcoming",
       }).save();
     } catch (error) {
@@ -79,7 +89,7 @@ export default async function crawl() {
         setTimeout(async () => {
           const { code, location } = docs[index];
 
-          var driver = new webdriver.Builder()
+          const driver = new webdriver.Builder()
             .withCapabilities(webdriver.Capabilities.chrome())
             .build();
 
@@ -113,9 +123,9 @@ export default async function crawl() {
           } finally {
             setTimeout(() => {
               driver.quit();
-            }, 3000);
+            }, 5000);
           }
-        }, 10000 * index);
+        }, 15000 * index);
       }
     },
   );

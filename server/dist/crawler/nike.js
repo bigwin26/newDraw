@@ -43,19 +43,22 @@ function getStyleCode(value) {
 //발매예정 상품리스트 크롤링
 function crawl() {
     return __awaiter(this, void 0, void 0, function* () {
-        //var driver = new webdriver.Builder().forBrowser("chrome").build();
-        var driver = new selenium_webdriver_1.default.Builder()
+        //const driver = new webdriver.Builder().forBrowser("chrome").build();
+        const driver = new selenium_webdriver_1.default.Builder()
             .withCapabilities(selenium_webdriver_1.default.Capabilities.chrome())
             .build();
         //webdriver URL 호출
         driver.get("https://www.nike.com/kr/launch/?type=upcoming");
         //리스트값 저장할 배열 선언
-        const items = [];
-        const el = yield driver.findElements(selenium_webdriver_1.By.className("launch-list-item  upcomingItem"));
-        for (let index = 0; index < el.length; index++) {
-            const element = el[index];
+        let items = [];
+        //발매예정 리스트 가져오기
+        const elements = yield driver.findElements(selenium_webdriver_1.By.className("launch-list-item  upcomingItem"));
+        //발매리스트 갯수만큼 객체생성
+        for (let index = 0; index < elements.length; index++) {
+            const element = elements[index];
             const item = {
                 title: "",
+                method: "",
                 code: "",
                 release_date: "",
                 location: "",
@@ -68,17 +71,23 @@ function crawl() {
                 const title = yield element
                     .findElement(selenium_webdriver_1.By.className("txt-description"))
                     .getText();
+                let method = yield element
+                    .findElement(selenium_webdriver_1.By.className("txt-subject"))
+                    .getText();
+                method = method.slice(-5, -3) === "응모" ? "DRAW" : "FCFS";
                 const release_date = yield element.getAttribute("data-active-date");
                 item.title = title;
+                item.method = method;
                 item.release_date = release_date;
                 item.code = code;
                 item.location = href;
                 //배열에 크롤링값 저장
-                items.push(item);
+                //items.push(item);
+                items = [...items, item];
             }
         }
-        // DB에 값 저장
-        items.forEach(({ title, code, location, release_date }) => __awaiter(this, void 0, void 0, function* () {
+        // 생성된 객체 DB에 값 저장
+        items.forEach(({ title, method, code, location, release_date }) => __awaiter(this, void 0, void 0, function* () {
             try {
                 yield new shoes_1.default({
                     title,
@@ -87,7 +96,7 @@ function crawl() {
                     price: null,
                     location,
                     release_date,
-                    method: "FCFS",
+                    method,
                     status: "upcoming",
                 }).save();
             }
@@ -103,7 +112,7 @@ function crawl() {
             for (let index = 0; index < docs.length; index++) {
                 setTimeout(() => __awaiter(this, void 0, void 0, function* () {
                     const { code, location } = docs[index];
-                    var driver = new selenium_webdriver_1.default.Builder()
+                    const driver = new selenium_webdriver_1.default.Builder()
                         .withCapabilities(selenium_webdriver_1.default.Capabilities.chrome())
                         .build();
                     //webdriver URL 호출
@@ -138,9 +147,9 @@ function crawl() {
                     finally {
                         setTimeout(() => {
                             driver.quit();
-                        }, 3000);
+                        }, 5000);
                     }
-                }), 10000 * index);
+                }), 15000 * index);
             }
         });
     });
