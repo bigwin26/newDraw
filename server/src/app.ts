@@ -13,7 +13,7 @@ connect();
 //crawler실행
 crawler();
 //라우터
-//app.use("/api", apiRouter);
+app.use("/api", apiRouter);
 
 app.listen(port, (err) => {
   if (err) return console.error(err);

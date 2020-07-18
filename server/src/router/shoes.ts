@@ -1,15 +1,14 @@
 import express, { Request, Response } from "express";
-import fs from "fs";
-import shoesController from "../controller/shoesController";
-import imageController from "../controller/imageController";
+import {
+  shoesList,
+  shoesDetail,
+  shoesImages,
+} from "../controller/shoesController";
 
 const router = express.Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send("hi shoes");
-});
-
-router.get("/shoes/:id", shoesController);
-router.get("/image/:id", imageController);
+router.get("/", shoesList);
+router.get("/:code", shoesDetail);
+router.get("/:code/image", shoesImages);
 
 export default router;

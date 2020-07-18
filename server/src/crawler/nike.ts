@@ -24,10 +24,13 @@ export default async function crawl() {
     path.join(__dirname, "../../chromedriver"),
   ).build();
   chrome.setDefaultService(service);
+
+  //window 테스트
   /* const driver = new webdriver.Builder()
     .forBrowser("chrome")
     .setChromeOptions(options)
     .build(); */
+
   const driver = new webdriver.Builder()
     .withCapabilities(webdriver.Capabilities.chrome())
     .setChromeOptions(options)
