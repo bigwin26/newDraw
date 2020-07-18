@@ -17,7 +17,7 @@ export default async function crawl() {
 
   options.addArguments("--disable-dev-shm-usage");
   options.addArguments("--no-sandbox");
-  options.addArguments("--disable-dev-shm-usage");
+  options.addArguments("--headless");
 
   //ubuntu server 드라이버 경로
   let service = new chrome.ServiceBuilder(
