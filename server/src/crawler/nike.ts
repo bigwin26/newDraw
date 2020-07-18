@@ -17,13 +17,14 @@ export default async function crawl() {
   options.addArguments("--disable-dev-shm-usage");
   options.addArguments("--no-sandbox");
 
-  const driver = new webdriver.Builder()
+  /* const driver = new webdriver.Builder()
     .forBrowser("chrome")
     .setChromeOptions(options)
-    .build();
-  /*  const driver = new webdriver.Builder()
-    .withCapabilities(webdriver.Capabilities.chrome())
     .build(); */
+  const driver = new webdriver.Builder()
+    .withCapabilities(webdriver.Capabilities.chrome())
+    .setChromeOptions(options)
+    .build();
 
   //webdriver URL 호출
   driver.get("https://www.nike.com/kr/launch/?type=upcoming");
