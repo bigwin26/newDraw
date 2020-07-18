@@ -1,6 +1,6 @@
 import Shoes from "../schemas/shoes";
 import webdriver, { By } from "selenium-webdriver";
-import downloadImg from "./common/imgdownload";
+import downloadImg from "../common/imgdownload";
 
 //크롤링한 주소에서 상품 code값 추출
 function getStyleCode(value: string) {
@@ -11,10 +11,19 @@ function getStyleCode(value: string) {
 
 //발매예정 상품리스트 크롤링
 export default async function crawl() {
-  //const driver = new webdriver.Builder().forBrowser("chrome").build();
+  const chrome = require("selenium-webdriver/chrome");
+  const options = new chrome.Options();
+
+  options.addArguments("--disable-dev-shm-usage");
+  options.addArguments("--no-sandbox");
+
   const driver = new webdriver.Builder()
-    .withCapabilities(webdriver.Capabilities.chrome())
+    .forBrowser("chrome")
+    .setChromeOptions(options)
     .build();
+  /*  const driver = new webdriver.Builder()
+    .withCapabilities(webdriver.Capabilities.chrome())
+    .build(); */
 
   //webdriver URL 호출
   driver.get("https://www.nike.com/kr/launch/?type=upcoming");

@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccount = require("../../../newDraw.json");
+const serviceAccount = require("../../newDraw.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -7,7 +7,7 @@ admin.initializeApp({
 });
 const topic = "shoes";
 
-export default function fcm(
+export default function fcmController(
   productName: string,
   productLocation: string,
   way: string,

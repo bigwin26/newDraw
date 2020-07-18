@@ -1,5 +1,5 @@
-import Shoes from "../../schemas/shoes";
-import fcm from "./fcm";
+import Shoes from "../schemas/shoes";
+import fcm from "../controller/fcmController";
 import cron from "node-schedule";
 
 async function addcron() {

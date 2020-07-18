@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import endpoint from "../endpoints.config";
 
 export default () => {
   const connect = () => {
@@ -6,7 +7,7 @@ export default () => {
       mongoose.set("debug", true);
     }
     mongoose.connect(
-      "mongodb://yourdraw:yourkim@13.125.216.20:27017",
+      endpoint.MONGO_URL,
       {
         dbName: "yourdraw",
         useNewUrlParser: true,
