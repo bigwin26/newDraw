@@ -20,7 +20,7 @@ export default async function crawl() {
 
   //ubuntu server 드라이버 경로
   let service = new chrome.ServiceBuilder(
-    path.join("/usr/bin/chromedriver"),
+    path.join("/usr/bin/chromedriver.exe"),
   ).build();
   chrome.setDefaultService(service);
   /* const driver = new webdriver.Builder()
