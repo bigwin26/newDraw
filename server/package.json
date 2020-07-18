@@ -21,6 +21,7 @@
   "homepage": "https://github.com/bigwin26/newDraw#readme",
   "devDependencies": {
     "@babel/preset-typescript": "^7.10.1",
+    "@types/cors": "^2.8.6",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.6",
     "@types/jest": "^26.0.3",
@@ -38,6 +39,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "firebase-admin": "^9.0.0",

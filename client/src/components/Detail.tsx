@@ -1,5 +1,81 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
+import { shoesApi } from "../lib/api/shoes";
+import Loader from "./Loader";
+import Message from "./Message";
+
+type Shoes = {
+  method: string;
+  title: string;
+  description: string;
+  release_date: string;
+  color: string;
+  price: string;
+  code: string;
+};
+
+export default withRouter(function Detail({ history, location, match }) {
+  const { id } = match.params;
+  const [detail, setDetail] = useState<Shoes | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const getDetail = useCallback(async (code: string) => {
+    setLoading(true);
+    try {
+      const { data } = await shoesApi.getShoesDetail(code);
+      setDetail(data);
+    } catch (error) {
+      setError("정보를 불러오는데 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getDetail(id);
+  }, [getDetail, id]);
+
+  return loading ? (
+    <Loader />
+  ) : error ? (
+    <Message color="red" text={error} />
+  ) : (
+    detail && (
+      <Container>
+        <InnerContainer>
+          <ReleaseWay>{detail.method}</ReleaseWay>
+          <Title>{detail.title}</Title>
+          <ImgContainer
+            imgUrl={`http://localhost:8080/api/shoes/${detail.code}-4/image`}
+          />
+          <Description>{detail.description}</Description>
+          <Line />
+          <Info>
+            <InfoItem>
+              <InfoTitle>Release</InfoTitle>
+              <InfoContext>{detail.release_date.slice(0, 10)}</InfoContext>
+            </InfoItem>
+            <InfoItem>
+              <InfoTitle>Color</InfoTitle>
+              <InfoContext>{detail.color}</InfoContext>
+            </InfoItem>
+            <InfoItem>
+              <InfoTitle>Retail</InfoTitle>
+              <InfoContext>{detail.price}</InfoContext>
+            </InfoItem>
+            <InfoItem>
+              <InfoTitle>PID</InfoTitle>
+              <InfoContext>{detail.code}</InfoContext>
+            </InfoItem>
+          </Info>
+          <Line />
+        </InnerContainer>
+      </Container>
+    )
+  );
+});
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -36,21 +112,14 @@ const Title = styled.div`
   margin: 0px;
 `;
 
-const ImgContainer = styled.div`
+const ImgContainer = styled.div<{ imgUrl: string }>`
   width: 100%;
   min-height: 300px;
-  background-image: url(${require("../lib/assets/test2.png")});
+  margin: 10px auto;
+  background-image: url(${(props) => props.imgUrl});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-`;
-
-const Img = styled.img`
-  width: 100%;
-  height: inherit;
-  background-image: url(${require("../lib/assets/test2.png")});
-  background-repeat: no-repeat;
-  background-size: contain;
 `;
 
 const Description = styled.div`
@@ -102,49 +171,3 @@ const InfoContext = styled.div`
   font-size: 14px;
   margin: 0px;
 `;
-
-export default function Detail() {
-  return (
-    <Container>
-      <InnerContainer>
-        <ReleaseWay>DRAW</ReleaseWay>
-        <Title>JORDAN 1</Title>
-        <ImgContainer>
-          <Img />
-        </ImgContainer>
-        <Description>
-          조던은 언제나 오래된 것을 새로워 보이게 만드는 특별한 능력이
-          있었습니다. 그리고 이번 시즌, 문자 그대로 폐기물을 재활용해 완성된
-          혁신적인 실루엣이 조던의 레거시를 이어 갑니다. 미래적이고 지속 가능한
-          디자인에는 재활용된 운동선수용 신발과 신발의 제작 과정에서 남은 여분의
-          조각들을 재활용한 소재인 나이키 그라인드(Nike Grind)로 탄생한 견고한
-          고무 아웃솔이 장착되어 있습니다. 또한 캔버스 느낌의 갑피 역시 재활용
-          소재로 제작되어, ‘지난 물건을 더 좋은 곳에 활용하자’는 제품의 주제와
-          가치에 중심을 두었습니다. 발밑의 폼이 부드럽고 유연한 쿠셔닝을
-          전달하며, 블랙 & 유니버시티 레드 컬러가 브랜드의 유구한 역사에 경의를
-          표합니다.\n\n*오직 나이키 멤버에 한해 먼저 구매 가능한 제품입니다.
-        </Description>
-        <Line />
-        <Info>
-          <InfoItem>
-            <InfoTitle>Release</InfoTitle>
-            <InfoContext>2020-07-13</InfoContext>
-          </InfoItem>
-          <InfoItem>
-            <InfoTitle>Color</InfoTitle>
-            <InfoContext>Sail/Wheat-Sail-Team Crismon</InfoContext>
-          </InfoItem>
-          <InfoItem>
-            <InfoTitle>Retail</InfoTitle>
-            <InfoContext>199,000원</InfoContext>
-          </InfoItem>
-          <InfoItem>
-            <InfoTitle>PID</InfoTitle>
-            <InfoContext>CODE101</InfoContext>
-          </InfoItem>
-        </Info>
-        <Line />
-      </InnerContainer>
-    </Container>
-  );
-}

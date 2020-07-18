@@ -2,6 +2,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+interface IHorizon {
+  title?: string;
+  path?: string;
+  children: React.ReactNode;
+}
+
+export default React.memo(({ children, path, title }: IHorizon) => {
+  return (
+    <Container>
+      {title && <Title>{title}</Title>}
+      {path && <StyledLink to={path}>더보기</StyledLink>}
+      <ArrowContainer>
+        <HorizonContainer>{children}</HorizonContainer>
+      </ArrowContainer>
+    </Container>
+  );
+});
+
 const Title = styled.h2`
   display: inline-block;
   padding: 10px;
@@ -63,21 +81,3 @@ const Container = styled.div`
     }
   }
 `;
-
-interface IHorizon {
-  title?: string;
-  path?: string;
-  children: React.ReactNode;
-}
-
-export default React.memo(({ children, path, title }: IHorizon) => {
-  return (
-    <Container>
-      {title && <Title>{title}</Title>}
-      {path && <StyledLink to={path}>더보기</StyledLink>}
-      <ArrowContainer>
-        <HorizonContainer>{children}</HorizonContainer>
-      </ArrowContainer>
-    </Container>
-  );
-});
