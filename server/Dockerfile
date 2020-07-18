@@ -13,5 +13,5 @@ COPY . .
 
 EXPOSE 8080
 
-CMD ["tsc && node", "dist/app.js"]
+CMD ["npm", "start"]
 
