@@ -1,6 +1,7 @@
 import Shoes from "../schemas/shoes";
 import webdriver, { By } from "selenium-webdriver";
 import downloadImg from "../common/imgdownload";
+import path from "path";
 
 //크롤링한 주소에서 상품 code값 추출
 function getStyleCode(value: string) {
@@ -17,6 +18,11 @@ export default async function crawl() {
   options.addArguments("--disable-dev-shm-usage");
   options.addArguments("--no-sandbox");
 
+  //ubuntu server 드라이버 경로
+  let service = new chrome.ServiceBuilder(
+    path.join("/opt/WebDriver/bin/chromedriver"),
+  ).build();
+  chrome.setDefaultService(service);
   /* const driver = new webdriver.Builder()
     .forBrowser("chrome")
     .setChromeOptions(options)
