@@ -16,7 +16,7 @@ const pagingController = async (req: Request, res: Response) => {
       maxPost,
       totalPage,
       currentPage,
-    } = paging(page, totalPost);
+    } = paging(Number(page), totalPost);
     const shoes = await Shoes.find({})
       .sort({ createAt: -1 })
       .skip(hidePost)
