@@ -33,4 +33,4 @@ jobs:
       - name: Build # React Build
         run: npm run build
       env:
-        SOURCE_DIR:'client/'
+        SOURCE_DIR:'client/src/'
