@@ -111,6 +111,7 @@ export default async function crawl() {
 
           const driver = new webdriver.Builder()
             .withCapabilities(webdriver.Capabilities.chrome())
+            .setChromeOptions(options)
             .build();
 
           //webdriver URL 호출
