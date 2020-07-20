@@ -16,7 +16,7 @@ jobs:
     name: Build, Deploy to S3 Bucket
     runs-on: [ubuntu-latest]
     env:
-      working-directory: ./website
+      working-directory: ./client
 
     strategy:
       matrix:
