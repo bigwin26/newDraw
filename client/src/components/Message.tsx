@@ -5,6 +5,9 @@ const Container = styled.div`
   width: 100vw;
   display: flex;
   justify-content: center;
+  position: relative;
+  top: 10vh;
+  height: 100vh;
 `;
 
 const Text = styled.span`
