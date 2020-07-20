@@ -10,12 +10,8 @@ const topic = "shoes";
 export default function fcmController(
   productName: string,
   productLocation: string,
-  way: string,
+  title: string,
 ) {
-  const title =
-    way === "5min"
-      ? `잠시후 5분 뒤 ${productName}이 발매됩니다.`
-      : `${productName}이 발매 되었습니다.`;
   const body = "클릭시 해당 상품페이지로 이동합니다.";
   const message = {
     notification: {
