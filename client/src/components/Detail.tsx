@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import { shoesApi } from "../lib/api/shoes";
+import { BASE_URL } from "../lib/config";
 import Loader from "./Loader";
 import Message from "./Message";
 
@@ -48,7 +49,7 @@ export default withRouter(function Detail({ history, location, match }) {
           <ReleaseWay>{detail.method}</ReleaseWay>
           <Title>{detail.title}</Title>
           <ImgContainer
-            imgUrl={`http://localhost:8080/api/shoes/${detail.code}-4/image`}
+            imgUrl={`${BASE_URL}/api/shoes/${detail.code}-4/image`}
           />
           <Description>{detail.description}</Description>
           <Line />

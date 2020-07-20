@@ -1,15 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { IShoes } from "../lib/types";
+import { BASE_URL } from "../lib/config";
 import styled from "styled-components";
 
 export default function Shoes({ shoes }: IShoes) {
   return (
     <Link to={`/product/${shoes.code}`}>
       <ImageContainer isReleased={shoes.status === "released" && true}>
-        <Image
-          imgUrl={`http://localhost:8080/api/shoes/${shoes.code}-4/image`}
-        />
+        <Image imgUrl={`${BASE_URL}/api/shoes/${shoes.code}-4/image`} />
         <InfoContainer>
           <Title>
             <h3>{shoes.title}</h3>

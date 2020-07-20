@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { BASE_URL } from "../lib/config";
 import Counter from "./Counter";
 
 export default function Poster({ info }: any) {
   return (
     info && (
       <Item>
-        <Img imgUrl={`http://localhost:8080/api/shoes/${info.code}-4/image`} />
+        <Img imgUrl={`${BASE_URL}/api/shoes/${info.code}-4/image`} />
         <Info>
           <h3>{info.status === "upcoming" ? "UPCOMING" : "RELEASED"}</h3>
           <h2>{info.title}</h2>
