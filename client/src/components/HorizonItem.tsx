@@ -1,5 +1,6 @@
 import React from "react";
 import { IShoes } from "../lib/types";
+import { BASE_URL } from "../lib/config";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
@@ -8,9 +9,7 @@ const HorizonItem = ({ shoes }: IShoes) => {
     <StyledLink to={`/product/${shoes.code}`}>
       <Container>
         <ImageContainer>
-          <Image
-            imgUrl={`http://localhost:8080/api/shoes/${shoes.code}-4/image`}
-          />
+          <Image imgUrl={`${BASE_URL}/api/shoes/${shoes.code}-4/image`} />
         </ImageContainer>
         <InfoContainer>
           <Title>

@@ -143,9 +143,9 @@ export default async function crawl() {
           } finally {
             setTimeout(() => {
               driver.quit();
-            }, 5000);
+            }, 3000);
           }
-        }, 15000 * index);
+        }, 20000 * index);
       }
     },
   );
