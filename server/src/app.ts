@@ -15,7 +15,7 @@ connect();
 crawler();
 //cors
 const corsOptions = {
-  origin: "http://bucket-name.s3-website.Region.amazonaws.com/#/", // 허락하고자 하는 요청 주소
+  origin: "http://bucket-name.s3-website.Region.amazonaws.com", // 허락하고자 하는 요청 주소
   credentials: true, // true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
 };
 app.use(cors(corsOptions));
