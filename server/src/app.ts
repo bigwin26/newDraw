@@ -23,14 +23,6 @@ app.use(cors(corsOptions));
 //라우터
 app.use("/api", apiRouter);
 
-require("greenlock-express")
-  .init({
-    packageRoot: __dirname,
-    configDir: "./greenlock.d",
-    maintainerEmail: "bigwin24@naver.com",
-  })
-  .server(app);
-
 app.listen(port, (err) => {
   if (err) return console.error(err);
   return console.log(`server is listening on ${port}`);
