@@ -18,4 +18,3 @@
 -- etc
 
 - nginx
-- docker
