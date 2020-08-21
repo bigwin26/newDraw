@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://yourdraw.ga/api/",
+  baseURL: "https://15.165.109.82/api/",
 });
 
 export const shoesApi = {
